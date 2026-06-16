@@ -1,0 +1,22 @@
+{
+    "name": "componenta/error-renderer-ignition",
+    "description": "Spatie Ignition renderer integration for Componenta error handling",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "componenta/error-handler": "^1.0",
+        "spatie/ignition": "^1.15"
+    },
+    "autoload": {
+        "psr-4": {
+            "Componenta\\Error\\Renderer\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Componenta\\Error\\Renderer\\Ignition\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable"
+}
