@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Componenta\Error\Renderer\Ignition\Tests\Renderer;
 
+use Componenta\Error\ErrorOccurrence;
 use Componenta\Error\Context\HttpContext;
 use Componenta\Error\Renderer\IgnitionRenderer;
 use Nyholm\Psr7\ServerRequest;
@@ -16,7 +17,7 @@ final class HttpRepresentationTest extends TestCase
     {
         $level = ob_get_level();
         $result = (new IgnitionRenderer())->render(
-            new RuntimeException('ignition test'),
+            new ErrorOccurrence(new RuntimeException('ignition test'), 'ERR-test'),
             new HttpContext(new ServerRequest('GET', '/')),
         );
         self::assertSame($level, ob_get_level());

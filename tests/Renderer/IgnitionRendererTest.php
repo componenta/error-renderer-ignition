@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Componenta\Error\Renderer\Ignition\Tests\Renderer;
 
+use Componenta\Error\ErrorOccurrence;
 use Componenta\Error\Context\CliContext;
 use Componenta\Error\Renderer\IgnitionRenderer;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -23,7 +24,7 @@ final class IgnitionRendererTest extends TestCase
         $renderer = new IgnitionRenderer();
         $exception = new RuntimeException('Ignition renderer test');
 
-        $output = $renderer->render($exception, CliContext::fromArgv());
+        $output = $renderer->render(new ErrorOccurrence($exception, 'ERR-test'), CliContext::fromArgv());
         self::assertSame('text/html; charset=utf-8', $output->contentType);
         self::assertSame($output->content, (string) $output);
 

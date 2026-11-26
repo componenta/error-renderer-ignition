@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Componenta\Error\Renderer;
 
 use Componenta\Error\ErrorContextInterface;
+use Componenta\Error\ErrorOccurrence;
 use Spatie\Ignition\Ignition;
 use RuntimeException;
 use Throwable;
@@ -19,8 +20,9 @@ final readonly class IgnitionRenderer implements ErrorRendererInterface
     ) {
     }
 
-    public function render(Throwable $exception, ErrorContextInterface $context): RenderedError
+    public function render(ErrorOccurrence $error, ErrorContextInterface $context): RenderedError
     {
+        $exception = $error->exception;
         $ignition = Ignition::make()->applicationPath(getcwd() ?: '');
         if ($this->editor !== null) {
             $ignition->setEditor($this->editor);
@@ -50,7 +52,7 @@ final readonly class IgnitionRenderer implements ErrorRendererInterface
         }
     }
 
-    public function supports(Throwable $exception, ErrorContextInterface $context): bool
+    public function supports(ErrorOccurrence $error, ErrorContextInterface $context): bool
     {
         return true;
     }

@@ -14,7 +14,8 @@ composer require componenta/error-renderer-ignition
 use Componenta\Error\Renderer\IgnitionRenderer;
 
 $renderer = new IgnitionRenderer();
-$result = $renderer->render($exception, $context);
+$error = (new \Componenta\Error\ErrorOccurrenceFactory())->create($exception);
+$result = $renderer->render($error, $context);
 $html = (string) $result;
 $contentType = $result->contentType;
 ```
