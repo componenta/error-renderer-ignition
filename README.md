@@ -14,7 +14,9 @@ composer require componenta/error-renderer-ignition
 use Componenta\Error\Renderer\IgnitionRenderer;
 
 $renderer = new IgnitionRenderer();
-$html = $renderer->render($exception, $context);
+$result = $renderer->render($exception, $context);
+$html = (string) $result;
+$contentType = $result->contentType;
 ```
 
 The renderer is intended for detailed development error output.
@@ -22,3 +24,5 @@ The renderer is intended for detailed development error output.
 ## Boundary
 
 This package only provides `IgnitionRenderer`. Application error handling, listeners, response emission, and safe production pages are outside this package.
+
+`render()` returns the core `RenderedError` value, with `content`, `contentType`, and explicit string conversion. Requires Error Handler 2.

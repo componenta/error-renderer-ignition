@@ -24,7 +24,9 @@ final class IgnitionRendererTest extends TestCase
         $exception = new RuntimeException('Ignition renderer test');
 
         $output = $renderer->render($exception, CliContext::fromArgv());
+        self::assertSame('text/html; charset=utf-8', $output->contentType);
+        self::assertSame($output->content, (string) $output);
 
-        self::assertNotEmpty($output);
+        self::assertNotEmpty($output->content);
     }
 }

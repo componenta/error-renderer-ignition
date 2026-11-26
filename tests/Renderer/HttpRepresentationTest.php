@@ -15,12 +15,13 @@ final class HttpRepresentationTest extends TestCase
     public function testRenderingPreservesOutputBufferDepth(): void
     {
         $level = ob_get_level();
-        $result = (new IgnitionRenderer())->renderHttp(
+        $result = (new IgnitionRenderer())->render(
             new RuntimeException('ignition test'),
             new HttpContext(new ServerRequest('GET', '/')),
         );
         self::assertSame($level, ob_get_level());
         self::assertSame('text/html; charset=utf-8', $result->contentType);
-        self::assertNotEmpty($result->body);
+        self::assertNotEmpty($result->content);
+        self::assertSame($result->content, (string) $result);
     }
 }

@@ -14,7 +14,9 @@ composer require componenta/error-renderer-ignition
 use Componenta\Error\Renderer\IgnitionRenderer;
 
 $renderer = new IgnitionRenderer();
-$html = $renderer->render($exception, $context);
+$result = $renderer->render($exception, $context);
+$html = (string) $result;
+$contentType = $result->contentType;
 ```
 
 Рендерер предназначен для подробного вывода ошибок в разработке.
@@ -22,3 +24,5 @@ $html = $renderer->render($exception, $context);
 ## Граница пакета
 
 Пакет предоставляет только `IgnitionRenderer`. Обработка ошибок приложения, слушатели, отправка ответа и безопасные страницы для боевого окружения находятся вне этого пакета.
+
+Метод `render()` возвращает объект `RenderedError` из ядра с полями `content`, `contentType` и преобразованием в строку. Требуется Error Handler 2.

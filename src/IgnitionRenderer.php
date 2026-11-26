@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Componenta\Error\Renderer;
 
-use Componenta\Error\Context\HttpErrorContextInterface;
 use Componenta\Error\ErrorContextInterface;
 use Spatie\Ignition\Ignition;
 use RuntimeException;
 use Throwable;
 
 /** Development renderer: rendering alone does not report to Flare. */
-final readonly class IgnitionRenderer implements HttpErrorRendererInterface
+final readonly class IgnitionRenderer implements ErrorRendererInterface
 {
     public function __construct(
         private ?string $editor = null,
@@ -20,7 +19,7 @@ final readonly class IgnitionRenderer implements HttpErrorRendererInterface
     ) {
     }
 
-    public function render(Throwable $exception, ErrorContextInterface $context): string
+    public function render(Throwable $exception, ErrorContextInterface $context): RenderedError
     {
         $ignition = Ignition::make()->applicationPath(getcwd() ?: '');
         if ($this->editor !== null) {
@@ -40,7 +39,7 @@ final readonly class IgnitionRenderer implements HttpErrorRendererInterface
             if (ob_get_level() !== $level + 1) {
                 throw new RuntimeException('Unexpected Ignition output buffer state.');
             }
-            return ob_get_contents() ?: '';
+            return new RenderedError(ob_get_contents() ?: '', 'text/html; charset=utf-8');
         } finally {
             while (ob_get_level() > $level) {
                 $before = ob_get_level();
@@ -54,10 +53,5 @@ final readonly class IgnitionRenderer implements HttpErrorRendererInterface
     public function supports(Throwable $exception, ErrorContextInterface $context): bool
     {
         return true;
-    }
-
-    public function renderHttp(Throwable $exception, HttpErrorContextInterface $context): RenderedError
-    {
-        return new RenderedError($this->render($exception, $context), 'text/html; charset=utf-8');
     }
 }
